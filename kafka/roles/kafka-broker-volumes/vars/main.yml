@@ -1,0 +1,7 @@
+---
+# vars file for roles/kafka-broker-volumes
+
+kafka_vg: vg.kafka.brokers
+kafka_lv: lv.kakfa.brokers
+kafka_lv_size: 100%FREE
+kafka_path: /data/kafka

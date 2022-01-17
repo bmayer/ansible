@@ -1,0 +1,54 @@
+---
+# tasks file for roles/kubernetes-workers
+
+- name: Enable & Start Docker
+  service:
+    name: docker
+    enabled: yes
+    state: started
+
+- name: Enable & Start Kubelet
+  service:
+    name: kubelet
+    enabled: yes
+    state: started
+
+- name: create influxdb fs
+  file:
+    path: /data/nfs/influxdb
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+
+- name: mount influxdb
+  mount: 
+    path: /data/nfs/influxdb
+    src: 10.0.0.190:/data/nfs/influxdb
+    state: present
+
+- name: create rabbit fs
+  file:
+    path: /data/nfs/rabbit
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: '0777'
+
+- name: mount rabbit
+  mount: 
+    path: /data/nfs/rabbit
+    src: 10.0.0.190:/data/nfs/rabbit
+    state: present
+
+- name: create vault fs
+  file:
+    path: /data/nfs/vault
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+
+- name: mount vault
+  mount: 
+    path: /data/nfs/vault
+    src: 10.0.0.190:/data/nfs/vault
+    state: present

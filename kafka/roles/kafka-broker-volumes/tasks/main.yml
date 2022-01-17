@@ -1,0 +1,39 @@
+---
+# tasks file for roles/kafka-broker-volumes
+
+- name: fdisk /dev/sda
+  command: fdisk -l /dev/sda
+
+
+- name: fdisk /dev/sdb
+  command: fdisk -l /dev/sdb
+
+
+- name: Create Volume Group
+  lvg:
+    pvs: /dev/sda1,/dev/sdb1
+    vg: "{{ kafka_vg  }}"
+
+
+- name: Create Logical Volume
+  lvol:
+    active: yes 
+    lv: "{{ kafka_lv }}"
+    shrink: no
+    size: "{{ kafka_lv_size }}"
+    state: present
+    vg: "{{ kafka_vg }}"
+    
+
+- name: Create Filesystem
+  filesystem:
+    dev: "/dev/{{ kafka_vg }}/{{ kafka_lv }}"
+    fstype: xfs
+    
+
+- name: Mount Filesystem
+  ansible.posix.mount:
+    fstype: xfs
+    path: "{{ kafka_path }}"
+    src: "/dev/{{ kafka_vg }}/{{ kafka_lv }}"
+    state: mounted

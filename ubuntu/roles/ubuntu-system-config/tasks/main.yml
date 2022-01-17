@@ -1,0 +1,19 @@
+---
+# tasks file for roles/ubuntu-system-config
+- name: mount ssd for nfs
+  mount:
+    path: /data/nfs
+    src: /dev/sda
+    state: present
+
+- name: start nfs-server
+  service:
+    name: nfs-kernel-server
+    enabled: yes
+    state: started
+
+# - name: validate /etc/exports
+
+- name: apply exports
+  command: exportfs -a
+  become: yes
