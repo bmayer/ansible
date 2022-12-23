@@ -121,5 +121,5 @@ ansible workers -m service -a "name=salt-minion enabled=no state=stopped" -u ${U
 ```shell=
 ansible-playbook kafka-broker-volumes.yml -u ubuntu -vv --check
 
-ansible-playbook -i w0 kafka-broker-volumes.yml -u ubuntu -vv --check
+ansible-playbook -l w0 kafka-broker-volumes.yml -u ubuntu -vv --check
 ```
